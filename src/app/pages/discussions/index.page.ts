@@ -4,6 +4,7 @@ import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 
 import type {Discussion} from '../../lib/github-interfaces';
 import {GithubService} from '../../lib/github.service';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 export const routeMeta: RouteMeta = {
   title: 'Github Discussions'
@@ -12,7 +13,7 @@ export const routeMeta: RouteMeta = {
 @Component({
   selector: 'app-discussions',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, RouterLink],
   template: `
     <header class="mb-4">
       <h1 class="mb-1 text-2xl font-semibold">Discussions</h1>
@@ -23,7 +24,7 @@ export const routeMeta: RouteMeta = {
       <h2>Title: {{discussion.title}}</h2>
       <p>By: {{discussion.author}}</p>
       <p>Created at: {{discussion.createdAt}}</p>
-      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View Details</button>
+      <button routerLink={{discussion.number}} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View Details</button>
       <hr/>
     </article>
     `,
