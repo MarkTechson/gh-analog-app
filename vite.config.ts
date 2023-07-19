@@ -17,8 +17,6 @@ export default defineConfig(({ mode }) => ({
       routes: async () => [
         '/',
         '/about',
-        '/blog',
-        '/blog/posts/2023-06-28-my-first-post',
       ],
     },
   })],
