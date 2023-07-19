@@ -17,7 +17,6 @@ import {GithubService} from '../../lib/github.service';
       <h3>View Comments Below ({{comments.length}})</h3>
       <ol class="mb-4" *ngFor="let comment of comments; index as i">
         <li>
-          <h4>Comment #{{i}}</h4>
           <p>By: {{comment.author}}</p>
           <p>Created at: {{comment.createdAt}}</p>
           <p>Content: {{comment.bodyHTML}}</p>
