@@ -6,6 +6,7 @@ import { GithubService } from '../../lib/github.service';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import {NgFor} from '@angular/common';
 import {Auth} from '@angular/fire/auth';
+import { GhAccountDetails } from '../../components/gh-account-details.component';
 
 export const routeMeta: RouteMeta = {
   title: 'Github Discussions'
@@ -14,8 +15,9 @@ export const routeMeta: RouteMeta = {
 @Component({
   selector: 'app-discussions',
   standalone: true,
-  imports: [NgFor, RouterLink, MatPaginatorModule],
+  imports: [NgFor, RouterLink, MatPaginatorModule, GhAccountDetails],
   template: `
+    <gh-account-details></gh-account-details>
     <header class="mb-4">
       <h1 class="mb-1 text-2xl font-semibold">Discussions</h1>
       <p class="mb-1 max-w-lg text-sm opacity-50">From Github</p>
