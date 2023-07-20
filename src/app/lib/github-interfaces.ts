@@ -5,6 +5,7 @@ export interface Discussion {
   title: string;
   author: string;
   createdAt: string;
+  id: string;
 }
 
 export interface DiscussionComment {

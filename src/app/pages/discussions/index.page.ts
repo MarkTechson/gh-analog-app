@@ -25,6 +25,7 @@ export const routeMeta: RouteMeta = {
       <p>By: {{discussion.author}}</p>
       <p>Created at: {{discussion.createdAt}}</p>
       <button routerLink={{discussion.number}} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View Details</button>
+      <button [routerLink]="['/discussions/add-discussion', discussion.id]" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Comment</button>
       <hr/>
     </article>
     <mat-paginator

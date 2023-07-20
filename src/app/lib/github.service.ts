@@ -34,6 +34,24 @@ export class GithubService {
             variables));
   }
 
+  async addDiscussion(discussionId: number, comment: String): Promise<DiscussionComment> {
+    const body = await this.queryGraphQl(`
+    mutation AddDiscussionComment($discussionId: ID!, $comment: String!) {
+      addDiscussionComment(input: {discussionId: $discussionId, body: $comment}) {
+        comment {
+          author {
+            login
+          }
+          bodyHTML
+          createdAt
+        }
+      }
+    }
+    `, {discussionId, comment});
+    const discussionComment = (body as any).addDiscussionComment.comment;
+    return {author: discussionComment.author, createdAt: discussionComment.createdAt, bodyHTML: discussionComment.bodyHTML};
+  }
+
 
   async getDiscussionList(): Promise<Discussion[]> {
     const body = await this.queryGraphQl(`
@@ -48,6 +66,7 @@ export class GithubService {
                   login
                 }
                 createdAt
+                id
               }
             }
           }
@@ -59,7 +78,8 @@ export class GithubService {
                              number: discussion.node.number,
                              title: discussion.node.title,
                              author: discussion.node.author.login,
-                             createdAt: discussion.node.createdAt
+                             createdAt: discussion.node.createdAt,
+                             id: discussion.node.id
                            }));
   }
 
