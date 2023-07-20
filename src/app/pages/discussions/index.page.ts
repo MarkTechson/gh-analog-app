@@ -1,10 +1,11 @@
 import { RouteMeta } from '@analogjs/router';
-import { NgFor } from '@angular/common';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import type { Discussion } from '../../lib/github-interfaces';
 import { GithubService } from '../../lib/github.service';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import {NgFor} from '@angular/common';
+import {Auth} from '@angular/fire/auth';
 
 export const routeMeta: RouteMeta = {
   title: 'Github Discussions'
@@ -54,6 +55,7 @@ export default class DiscussionsComponent implements OnInit {
   private currentPage = 1;
   private isLastPage = false;
   private isFinishedLoading = false;
+  private firebaseAuth = inject(Auth);
 
   discussions: WritableSignal<Array<Discussion>> = signal([]);
   allDiscussions: Array<Discussion> = [];
@@ -71,6 +73,8 @@ export default class DiscussionsComponent implements OnInit {
       .catch(e => {
         console.log(e);
       });
+      // example of getting the current user
+      console.log(this.firebaseAuth.currentUser);
   }
 
   getPageDiscussions(discussions: Discussion[]) {

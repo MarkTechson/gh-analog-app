@@ -1,6 +1,8 @@
-import {RouteMeta} from '@analogjs/router';
-import {Component} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import { RouteMeta } from '@analogjs/router';
+import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { GithubAuthProvider, signInWithPopup, Auth } from '@angular/fire/auth';
+import { NgIf } from '@angular/common';
 
 export const routeMeta: RouteMeta = {
   title: 'Analog Starter App'
@@ -8,40 +10,18 @@ export const routeMeta: RouteMeta = {
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [RouterLink, NgIf],
   standalone: true,
   template: `
+    <h1>Login Page {{isLoggedIn()}}</h1>
+
+    <button (click)="ghLogin()">Login with GitHub</button>
     <div>
-      <a href="https://analogjs.org/" target="_blank">
-        <img alt="Analog Logo" class="logo analog" src="/analog.svg" />
+      <a routerLink="/discussions"
+        class="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
+        Discussions
       </a>
     </div>
-
-    <h2>Analog</h2>
-
-    <h3>The fullstack meta-framework for Angular!</h3>
-
-    <div class="mb-32 grid text-center lg:mb-0">
-        <a
-          routerLink="/discussions"
-          class="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-
-        >
-          <h2 class="mb-3 text-2xl font-semibold">
-            Discussions
-            <span class="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p class="m-0 max-w-lg text-sm opacity-50">
-            See discussions in the Github repo.
-          </p>
-        </a>
-      </div>
-    <p class="read-the-docs">
-      For guides on how to customize this project, visit the
-      <a href="https://analogjs.org" target="_blank">Analog documentation</a>
-    </p>
   `,
   styles: [
     `
@@ -61,4 +41,29 @@ export const routeMeta: RouteMeta = {
   ],
 })
 export default class HomeComponent {
+  provider = new GithubAuthProvider();
+  firebaseAuth = inject(Auth);
+
+  constructor() {
+    this.provider.setCustomParameters({
+      'allow_signup': 'false'
+    });
+    console.log(`Index page current user: `, this.firebaseAuth.currentUser);
+  }
+
+  isLoggedIn() {
+    return this.firebaseAuth.currentUser ? true : false;
+  }
+
+  async ghLogin() {
+    const result = await signInWithPopup(this.firebaseAuth, this.provider);
+
+    // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+    const credential = GithubAuthProvider.credentialFromResult(result);
+    const token = credential?.accessToken;
+
+    // The signed-in user info.
+    const user = result.user;
+  }
 }
+

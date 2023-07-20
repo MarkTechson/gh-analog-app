@@ -5,6 +5,12 @@ import analog from '@analogjs/platform';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  ssr: {
+    noExternal: [
+      'rxfire/auth',
+      'firebase/auth'
+    ],
+  },
   publicDir: 'src/assets',
   build: {
     target: ['es2020'],
@@ -13,6 +19,7 @@ export default defineConfig(({ mode }) => ({
     mainFields: ['module'],
   },
   plugins: [analog({
+    ssr: false,
     prerender: {
       routes: async () => [
         '/',
